@@ -18,14 +18,16 @@ export function Inicio() {
   }, []);
 
   return (
-    <div className="container">
-      <h1>Noticias</h1>
+    <div className="container mt-5">
       <div className="row">
         {news.map((article) => (
-          <div key={article.url} className="col">
-            <div className="card">
-              <h2>{article.title}</h2>
-              <p>{article.description}</p>
+          <div key={article.url} className="col mb-4">
+            <div className="card" style={{minWidth: "200px"}}>
+              <div className="card-body">
+              <h3 className="card-title">{article.title}</h3>
+              <hr />
+              <p>{article.author}</p>
+              </div>
             </div>
           </div>
         ))}
