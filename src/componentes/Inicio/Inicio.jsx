@@ -1,11 +1,35 @@
-export function Inicio () {
+import { useState, useEffect } from "react";
 
-    return (
-        <div className="container mt-5">
-            <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero dolorem, similique accusamus recusandae consequatur harum quisquam eum dignissimos, tenetur, excepturi quo illum fugit laudantium nihil nemo nulla molestiae modi!</h2>
-            <div>
-                <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam blanditiis unde aut laborum, voluptatibus, ducimus ab, neque repellat libero placeat ad nisi ullam. Nam sed, sunt tempore cumque amet officia.</h2>
+export function Inicio() {
+  const [news, setNews] = useState([]);
+
+  useEffect(() => {
+    const apiKey = "ccbb3d66fce440c5a8493fe3f243e876";
+    const apiUrl = `https://newsapi.org/v2/top-headlines?country=ar&apiKey=${apiKey}`;
+
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setNews(data.articles);
+      })
+      .catch((error) => {
+        console.error("Error fetching news:", error);
+      });
+  }, []);
+
+  return (
+    <div className="container">
+      <h1>Noticias</h1>
+      <div className="row">
+        {news.map((article) => (
+          <div key={article.url} className="col">
+            <div className="card">
+              <h2>{article.title}</h2>
+              <p>{article.description}</p>
             </div>
-        </div>
-    );
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
