@@ -32,8 +32,8 @@ export function Header() {
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="algo" />
             <Navbar.Collapse id="algo">
-              <Nav className="me-auto">
-              <Nav.Link as={Link} to="/inicio">
+              <Nav className="me-auto" variant="underline">
+              <Nav.Link eventKey="link-1" as={Link} to="/inicio">
                   Inicio
                 </Nav.Link>
                 <Nav.Link as={Link} to="/institucional">

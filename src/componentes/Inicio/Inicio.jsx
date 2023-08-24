@@ -32,11 +32,12 @@ export function Inicio() {
       <div className="row">
         {news.map((article) => (
           <div key={article.url} className="col-4 mb-4">
-            <div className="card" style={{ minWidth: "200px" }}>
+            <div className="card text-center" style={{ minWidth: "200px" }}>
               <div className="card-body">
                 <h3 className="card-title">{article.title}</h3>
+                <a href={article.url} class="card-link">ver mas</a>
                 <hr />
-                <p id="parrafo">{article.author}</p>
+                <p>Fuente: {article.author}</p>
               </div>
             </div>
           </div>
