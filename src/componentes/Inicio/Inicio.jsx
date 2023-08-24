@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./Inicio.css";
 
 export function Inicio() {
   const [news, setNews] = useState([]);
@@ -20,13 +21,22 @@ export function Inicio() {
   return (
     <div className="container mt-5">
       <div className="row">
+        <div className="col mb-4">
+          <img className="img-header"
+            src="/img/fcad-header.jpg"
+            class="img-thumbnail rounded mx-auto d-block"
+            alt="..."
+          />
+        </div>
+      </div>
+      <div className="row">
         {news.map((article) => (
-          <div key={article.url} className="col mb-4">
-            <div className="card" style={{minWidth: "200px"}}>
+          <div key={article.url} className="col-4 mb-4">
+            <div className="card" style={{ minWidth: "200px" }}>
               <div className="card-body">
-              <h3 className="card-title">{article.title}</h3>
-              <hr />
-              <p>{article.author}</p>
+                <h3 className="card-title">{article.title}</h3>
+                <hr />
+                <p id="parrafo">{article.author}</p>
               </div>
             </div>
           </div>

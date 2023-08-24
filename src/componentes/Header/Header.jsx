@@ -18,7 +18,7 @@ export function Header() {
   return (
     <BrowserRouter>
       <>
-        <Navbar className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
+        <Navbar className="bg-body-tertiary fixed-top" bg="dark" data-bs-theme="dark">
           <Container>
             <Navbar.Brand href="#home">
               <img
