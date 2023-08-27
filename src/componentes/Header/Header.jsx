@@ -61,6 +61,7 @@ export function Header() {
         </Navbar>
       </>
       <Routes>
+        <Route path="/" element={<Inicio />}></Route>
         <Route path="inicio" element={<Inicio />}></Route>
         <Route path="institucional" element={<Institucional />}></Route>
         <Route path="alumnos" element={<Alumnos />}></Route>
