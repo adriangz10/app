@@ -19,14 +19,17 @@ export function Inicio() {
   }, []);
 
   return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col mb-4">
-          <img className="img-header"
-            src="/img/fcad-header.jpg"
-            class="img-thumbnail rounded mx-auto d-block"
-            alt="..."
-          />
+    <div className="container">
+      <div className="container" id="container-img">
+        <div className="row">
+          <div className="col mb-4">
+            <img
+              className="img-header"
+              src="/img/fcad-header.jpg"
+              class="img-thumbnail rounded mx-auto d-block"
+              alt="..."
+            />
+          </div>
         </div>
       </div>
       <div className="row">
@@ -35,7 +38,9 @@ export function Inicio() {
             <div className="card text-center" style={{ minWidth: "200px" }}>
               <div className="card-body">
                 <h3 className="card-title">{article.title}</h3>
-                <a href={article.url} class="card-link">ver mas</a>
+                <a href={article.url} class="card-link">
+                  ver mas
+                </a>
                 <hr />
                 <p>Fuente: {article.author}</p>
               </div>

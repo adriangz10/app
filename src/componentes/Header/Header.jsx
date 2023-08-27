@@ -2,6 +2,7 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import React from "react";
 
 import { BrowserRouter, Route, Link, Routes } from "react-router-dom";
 
@@ -20,7 +21,7 @@ export function Header() {
       <>
         <Navbar className="bg-body-tertiary fixed-top" bg="dark" data-bs-theme="dark">
           <Container>
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="/inicio">
               <img
                 alt=""
                 src="/img/LOGO-fcad-2.png"
@@ -33,7 +34,7 @@ export function Header() {
             <Navbar.Toggle aria-controls="algo" />
             <Navbar.Collapse id="algo">
               <Nav className="me-auto" variant="underline">
-              <Nav.Link eventKey="link-1" as={Link} to="/inicio">
+              <Nav.Link as={Link} to="/inicio" activeClassName="active" exact>
                   Inicio
                 </Nav.Link>
                 <Nav.Link as={Link} to="/institucional">
