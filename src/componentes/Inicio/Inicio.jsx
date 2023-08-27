@@ -19,19 +19,7 @@ export function Inicio() {
   }, []);
 
   return (
-    <div className="container">
-      <div className="container" id="container-img">
-        <div className="row">
-          <div className="col mb-4">
-            <img
-              className="img-header"
-              src="/img/fcad-header.jpg"
-              class="img-thumbnail rounded mx-auto d-block"
-              alt="..."
-            />
-          </div>
-        </div>
-      </div>
+    <div className="container mt-5">
       <div className="row">
         {news.map((article) => (
           <div key={article.url} className="col-4 mb-4">
