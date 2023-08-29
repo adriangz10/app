@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 
 export function Alumnos() {
+
   const [datos, setDatos] = useState({
     documento: "",
     apellido: "",
@@ -37,7 +38,10 @@ export function Alumnos() {
         datos.celular
     );
     Array.from(document.querySelectorAll("input")).forEach(
-      (input) => (input.value = "")
+      input => (input.value = "")
+    );
+    Array.from(document.querySelectorAll("select")).forEach(
+      input => (input.value = "")
     );
   };
 
