@@ -34,3 +34,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+#titulo-card {
+    text-align: center;
+}
