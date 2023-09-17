@@ -18,8 +18,8 @@ export function Contacto() {
         <div className="row">
           <div className="col-md-2"></div>
           <div className="col-md-4">
-            <Card style={{ width: "26rem" }}>
-              <Card.Body>
+            <article className="card-contacto" style={{ width: "26rem" }}>
+              <body className="card-body-contacto">
                 <Card.Title>Envía tus consultas</Card.Title>
 
                 <Form onSubmit={enviarInformacion}>
@@ -64,12 +64,12 @@ export function Contacto() {
                     Enviar
                   </Button>
                 </Form>
-              </Card.Body>
-            </Card>
+              </body>
+            </article>
           </div>
 
           <div className="col-md-4">
-            <Card style={{ width: "26rem" }}>
+            <article style={{ width: "26rem" }}>
               <Card.Body>
                 <Card.Title>Información Útil</Card.Title>
                 <Table striped bordered hover>
@@ -100,7 +100,7 @@ export function Contacto() {
                   4231410 | E-mail.: informes.fcad@uner.edu.ar
                 </p>
               </Card.Body>
-            </Card>
+            </article>
           </div>
         </div>
       </div>

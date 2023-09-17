@@ -22,18 +22,18 @@ export function Inicio() {
     <div className="container mt-5">
       <div className="row">
         {news.map((article) => (
-          <div key={article.url} className="col-4 mb-4">
-            <div className="card text-center" id="card-inicio" style={{ minWidth: "200px" }}>
-              <div className="card-body">
+          <article key={article.url} className="col-4 mb-4">
+            <div className="card text-center" style={{ minWidth: "200px" }}>
+              <body className="card-body">
                 <h3 className="card-title">{article.title}</h3>
                 <a href={article.url} class="card-link">
                   ver mas
                 </a>
                 <hr />
                 <p>Fuente: {article.author}</p>
-              </div>
+              </body>
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </div>
