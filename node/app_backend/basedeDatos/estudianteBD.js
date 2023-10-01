@@ -1,6 +1,6 @@
 const conexion = require('./conexionBD');
 
-const buscarPorId = async(idEstudiante) =>{
+const buscarPorId = async (idEstudiante) => {
 
     const consulta = `SELECT  dni, nombre, apellido,
     (CASE 
@@ -21,7 +21,7 @@ const buscarPorId = async(idEstudiante) =>{
 }
 
 
-const buscarTodos = async() =>{
+const buscarTodos = async () => {
 
     const consulta = `SELECT  dni, nombre, apellido, fechaNacimiento, correoElectronico, celular, foto,
     (CASE 
@@ -42,33 +42,31 @@ const buscarTodos = async() =>{
     return estudiantes;
 }
 
-const eliminar = async(idEstudiante) =>{
+const eliminar = async (idEstudiante) => {
     const consulta = `UPDATE estudiante SET activo = 0 WHERE idEstudiante = ?`;
     await conexion.query(consulta, [idEstudiante]);
 }
 
-const crear = async(estudiante) =>{
+const crear = async (estudiante) => {
     //const {dni, nombre, apellido, fechaNacimiento, nacionalidad, correoElectronico, celular, foto} = estudiante;
     //const consulta =`INSERT INTO estudiante (dni, nombre, apellido, fechaNacimiento, nacionalidad, correoElectronico, celular, foto) 
     //VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)`
-    const consulta =`INSERT INTO estudiante SET ?`; 
+    const consulta = `INSERT INTO estudiante SET ?`;
     const [estudianteNuevo] = await conexion.query(consulta, estudiante);
 
     //console.log(estudianteNuevo.insertId);
     return buscarPorId(estudianteNuevo.insertId);
 }
 
-
-// const editar = async() =>{}
-
-
-
-
-
+const editar = async (estudianteActualizado) => {
+    const consulta = "UPDATE estudiante SET --- WHERE idEstudiante = ?"; // TODO No sabría cuales son los datos por setear exactamente.
+    await conexion.query(consulta, [estudianteActualizado.idEstudiante]); // TODO Supongo que así llamaría la ID del estudiante, tengo que testear.
+}
 
 module.exports = {
     buscarPorId,
     buscarTodos,
     eliminar,
     crear,
+    editar,
 }
