@@ -59,7 +59,15 @@ const crear = async (estudiante) => {
 }
 
 const editar = async (estudianteActualizado) => {
-    const consulta = "UPDATE estudiante SET --- WHERE idEstudiante = ?"; // TODO No sabría cuales son los datos por setear exactamente.
+    const consulta = "UPDATE estudiante \
+        SET dni = " + estudianteActualizado.dni + ", \
+        nombre = " + estudianteActualizado.nombre + ", \
+        apellido = " + estudianteActualizado.apellido + ", \
+        fechaNacimiento = " + estudianteActualizado.fechaNacimiento + ", \
+        correoElectronico = " + estudianteActualizado.correoElectronico + ", \
+        celular = " + estudianteActualizado.celular + ", \
+        foto = " + estudianteActualizado.foto +
+        " WHERE idEstudiante = ? ";
     await conexion.query(consulta, [estudianteActualizado.idEstudiante]); // TODO Supongo que así llamaría la ID del estudiante, tengo que testear.
 }
 
