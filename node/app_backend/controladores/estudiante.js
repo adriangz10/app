@@ -77,6 +77,7 @@ crear = async (req, res) => {
 
 editar = async (req, res) => {
     const idEstudiante = req.params.idEstudiante;
+    const actualizarDatos = req.body;
 
     try {
         if (!idEstudiante) {
@@ -85,18 +86,20 @@ editar = async (req, res) => {
 
         const estudiante = await estudianteBD.buscarPorId(idEstudiante);
 
-        if (!estudiante) {
+        if (!estudiante || estudiante.length == 0) {
             res.status(404).json({ estado: 'FALLO', msj: 'Estudiante no encontrado' });
             return;
         }
 
-        res.status(200).json({ estado: 'Ok', msj: 'Datos del estudiante', dato: estudiante });
+        const estudianteActualizado = await estudianteBD.editar(idEstudiante, actualizarDatos);
+
+        res.status(200).json({ estado: 'Ok', msj: 'Datos del estudiante actualizados', dato: estudianteActualizado });
     } catch (exec) {
         throw exec;
     }
 }
 
-actualizar = async (req, res) => {
+/* actualizar = async (req, res) => {
     const idEstudiante = req.params.idEstudiante;
     const actualizarDatos = req.body;
 
@@ -107,7 +110,7 @@ actualizar = async (req, res) => {
     } catch (exec) {
         throw exec;
     }
-}
+} */
 
 module.exports = {
     buscarPorId,
