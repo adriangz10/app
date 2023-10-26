@@ -1,20 +1,20 @@
 const { Router } = require('express');
-const { buscarPorId, editar, crear } = require('../../controladores/estudiante');
+const { buscarPorId } = require('../../controladores/estudiante');
 
 
 const router = Router();
 
-// //agregar
-router.post('/estudiantes', crear);
+//agregar/crear un estudiante nuevo
+ router.post('/estudiantes', crear);
 
-// //eliminar
+//eliminar
 router.delete('/estudiantes/:idEstudiante', eliminar);
 
-// //editar
+//editar o actualizar
 router.put('/estudiantes/:idEstudiante', editar);
 
-// //buscar
-router.get('/estudiantes', buscarTodos);
+//buscar
+ router.get('/estudiantes', buscarTodos);
 
 //buscar por ID
 router.get('/estudiantes/:idEstudiante', buscarPorId);

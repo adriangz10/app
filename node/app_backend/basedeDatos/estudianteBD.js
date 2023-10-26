@@ -58,6 +58,19 @@ const crear = async (estudiante) => {
     return buscarPorId(estudianteNuevo.insertId);
 }
 
+// const editar = async (estudianteActualizado) => {
+//     const consulta = "UPDATE estudiante \
+//         SET dni = " + estudianteActualizado.dni + ", \
+//         nombre = " + estudianteActualizado.nombre + ", \
+//         apellido = " + estudianteActualizado.apellido + ", \
+//         fechaNacimiento = " + estudianteActualizado.fechaNacimiento + ", \
+//         correoElectronico = " + estudianteActualizado.correoElectronico + ", \
+//         celular = " + estudianteActualizado.celular + ", \
+//         foto = " + estudianteActualizado.foto +
+//         " WHERE idEstudiante = " + estudianteActualizado.idEstudiante + "";
+//     await conexion.query(consulta, [estudianteActualizado.idEstudiante]); 
+//}
+
 const editar = async (idEstudiante, estudianteActualizado) => {
     const consulta = "UPDATE estudiante \
         SET dni = '" + estudianteActualizado.dni + "', \
@@ -70,8 +83,10 @@ const editar = async (idEstudiante, estudianteActualizado) => {
         "' WHERE idEstudiante = " + idEstudiante;
 
     //const consulta = "UPDATE estudiante SET nombre = '" + estudianteActualizado.nombre + "' WHERE idEstudiante = 1";
-    await conexion.query(consulta, [estudianteActualizado.idEstudiante]); // TODO Supongo que así llamaría la ID del estudiante, tengo que testear.
+    await conexion.query(consulta, [estudianteActualizado.idEstudiante]); // TODO Supongo que así llamaría la ID del estudiante, tengo que testear.
 }
+
+
 
 module.exports = {
     buscarPorId,

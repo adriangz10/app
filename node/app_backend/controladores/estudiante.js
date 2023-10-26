@@ -2,12 +2,11 @@
 // TODO Deberían comentar el código y explicar que hace cada función.
 // TODO Los catch>throw no retornarían un error ambiguo? Habría que añadir un caso de status 500.
 
-const estudianteBD = require('../basedeDatos/estudianteBD')
+const estudianteBD = require('../basedeDatos/estudianteBD');
 
 buscarPorId = async (req, res) => {
     try {
-        const idEstudiante = req.params.idEstudiante; // const { id } = req.params; sería una manera más sencilla de hacer esto.
-
+        const idEstudiante = req.params.idEstudiante; 
         if (!idEstudiante) {
             res.status(404).json({ estado: 'FALLO', msj: 'Falta el ID' });
         }
@@ -51,7 +50,7 @@ eliminar = async (req, res) => {
 
 crear = async (req, res) => {
     const { dni, nombre, apellido, fechaNacimiento, nacionalidad, correoElectronico, celular, foto } = req.body;
-
+    //controlamos que los campos que no admiten NULL estén completos
     if (!dni || !nombre || !apellido || !nacionalidad || !correoElectronico) {
 
         res.status(404).json({ estado: 'FALLO', msj: 'Faltan campos obligatorios' });
@@ -68,50 +67,80 @@ crear = async (req, res) => {
         };
         try {
             const estudianteNuevo = await estudianteBD.crear(estudiante);
-            res.status(201).json({ estado: 'Ok', msj: 'Estudiante habilitado', dato: estudianteNuevo });
+            res.status(201).json({ estado: 'OK', msj: 'Estudiante habilitado', dato: estudianteNuevo });
         } catch (exec) {
             console.log(exec);
         }
     }
 }
 
+// editar = async (req, res) => {
+//     const idEstudiante = req.params.idEstudiante;
+
+//     try {
+//         if (!idEstudiante) {
+//             res.status(404).json({ estado: 'FALLO', msj: 'Falta el ID' });
+//         }
+
+//         const estudiante = await estudianteBD.buscarPorId(idEstudiante);
+
+//         if (!estudiante) {
+//             res.status(404).json({ estado: 'FALLO', msj: 'Estudiante no encontrado' });
+//             return;
+//         }
+
+//         res.status(200).json({ estado: 'Ok', msj: 'Datos del estudiante', dato: estudiante });
+//     } catch (exec) {
+//         throw exec;
+//     }
+// }
+
+// actualizar = async (req, res) => {
+//     const idEstudiante = req.params.idEstudiante;
+//     const actualizarDatos = req.body;
+
+//     try {
+//         const estudianteActualizado = await estudianteBD.actualizar(idEstudiante, actualizarDatos);
+
+//         res.status(200).json({ estado: 'Ok', msj: 'Datos del estudiante actualizados', dato: estudianteActualizado });
+//     } catch (exec) {
+//         throw exec;
+//     }
+// }
+
 editar = async (req, res) => {
     const idEstudiante = req.params.idEstudiante;
-    const actualizarDatos = req.body;
+     const actualizarDatos = req.body;
 
     try {
-        if (!idEstudiante) {
-            res.status(404).json({ estado: 'FALLO', msj: 'Falta el ID' });
+        if (!idEstudiante) {//si no se especifica un ID
+            res.status(404).json({ estado: 'FALLO', msj: 'No se especificó un ID' });
         }
-
+        //llamamos a la función en busca de un estudiante por ID
         const estudiante = await estudianteBD.buscarPorId(idEstudiante);
-
+        
+        //si no existe el estudiante o su nombre no está completo
         if (!estudiante || estudiante.length == 0) {
             res.status(404).json({ estado: 'FALLO', msj: 'Estudiante no encontrado' });
             return;
         }
+        
+        //si todo está correcto, lanzamos la consulta desde la base de datos
+        const estudianteActualizado = await estudianteBD.editar(idEstudiante, actualizarDatos);
+        //mostramos el mensaje de que todo está bien
+        res.status(200).json({ estado: 'OK', msj: 'Datos del estudiante', dato: estudianteActualizado});
+    } catch (exec) {
+        throw exec;
+    }
 
+    /* try {
         const estudianteActualizado = await estudianteBD.editar(idEstudiante, actualizarDatos);
 
         res.status(200).json({ estado: 'Ok', msj: 'Datos del estudiante actualizados', dato: estudianteActualizado });
     } catch (exec) {
         throw exec;
-    }
+    } */
 }
-
-/* actualizar = async (req, res) => {
-    const idEstudiante = req.params.idEstudiante;
-    const actualizarDatos = req.body;
-
-    try {
-        const estudianteActualizado = await estudianteBD.actualizar(idEstudiante, actualizarDatos);
-
-        res.status(200).json({ estado: 'Ok', msj: 'Datos del estudiante actualizados', dato: estudianteActualizado });
-    } catch (exec) {
-        throw exec;
-    }
-} */
-
 module.exports = {
     buscarPorId,
     buscarTodos,
