@@ -6,6 +6,7 @@ import { Header } from "./Componentes/Header/Header";
 import { Footer } from "./Componentes/Footer/Footer";
 import { Banner } from "./Componentes/Banner/Banner";
 
+
 //Imports demás componentes 
 import { Inicio } from "./Componentes/Inicio/Inicio";
 import { Institucional } from "./Componentes/Institucional/Institucional";
@@ -13,14 +14,17 @@ import { Alumnos } from "./Componentes/Alumnos/Alumnos";
 import { Materias } from "./Componentes/Materias/Materias";
 import { Carreras } from "./Componentes/Carreras/Carreras";
 import { Inscripciones } from "./Componentes/Inscripciones/Inscripciones";
-//import { Inscribir } from "./Componenetes/Incripciones/Inscribir";
-//import { Inscriptos } from "./Componentes/Inscripciones/Inscriptos"
+import { Inscribir } from "./Componenetes/Incripciones/Inscribir";
+import { Inscriptos } from "./Componentes/Inscripciones/Inscriptos"
 import { Contacto } from "./Componentes/Contacto/Contacto";
 import { Login } from "./Componentes/Login/Login";
+import { Dashboard } from "./Componentes/Dashboard/Dashboard";
 
  
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { UserProvider } from "./Componentes/UserContext/UserContext";
+import { ProtectedRoute } from "./Componentes/ProtectedRoute/ProtectedRoute"; 
 
 export function App() {
   return (
@@ -37,9 +41,9 @@ export function App() {
         
         <Route path='/privado/dashboard' 
         element={
-        <ProtecteRoute mustBeBedel={false}>
+        <ProtectedRoute mustBeBedel={false}>
           {<Dashboard/>}
-        </ProtecteRoute>
+        </ProtectedRoute>
       }/> 
         {/*en la ruta para dashboar mustBeBedel debe ser "false" ya que es una ruta solo para decano*/}
 
@@ -59,9 +63,9 @@ export function App() {
         
         <Route path="privado/carreras" 
         element={
-          <ProtectecRoute mustBedel={true}>
+          <ProtectedRoute mustBedel={true}>
             {<Carreras/>}
-          </ProtectecRoute>
+          </ProtectedRoute>
         }/>
         
         <Route path="/privado/inscripciones" 
@@ -73,14 +77,14 @@ export function App() {
         
         <Route path="/privado/inscribir/:parametro" 
         element={
-          <ProtectedRoute mustBeBedel={true}>
+          <ProtectedRoute mustBeBedel={true} component={Inscribir}>
             {<Inscribir/>}
           </ProtectedRoute>
         }/>
         
         <Route path="/privado/inscriptos/idInscripcion/:idEstudiante" 
         element={
-          <ProtectedRoute mustBeBedel={true}>
+          <ProtectedRoute mustBeBedel={true} component={Inscriptos}>
             {<Inscriptos/>}
           </ProtectedRoute>
         }/>

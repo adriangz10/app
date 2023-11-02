@@ -73,7 +73,7 @@ export function Alumnos() {
         fechaNacimiento:'',
         nacionalidad:'',
         correoElectronico:'',
-        celui
+        celular:''
       })
       buscarEstudiantes();
     }).catch(error =>{

@@ -28,14 +28,25 @@ app.get('/', (req, res)=>{
     res.status(200).json({saludo});
 });
 
-//acá no recuerdo pero es necesario para determinar que usuario entra en qué ruta...
-//por ende, acá debería ir {esDecano} después.
-const { esBedel } = require('./middlewares/esBedel');
+//ruta para acceder a los archivos de imagenes "archivos/imagenes" 
+app.get('/archivos/:nombreArchivo', (req, res)=>{
+     const nombreArchivo = req.params.nombreArchivo;
+     res.sendFile(path.join(__dirname, "archivos", nombreArchivo));
+ })
+
+
 
 //definimos las rutas del api
 //Públicas 
 const v1Publico = require('./v1/rutas/publico');
 const v1Auth = require('./v1/rutas/auth');
+
+
+//acá no recuerdo pero es necesario para determinar que usuario entra en qué ruta...
+//por ende, acá debería ir {esDecano} después.
+const { esBedel } = require('./middlewares/esBedel');
+const { esDecano } = require('./middlewares/esDecano');
+
 
 //Privadas
 const v1Estudiante = require('./v1/rutas/estudiante');
@@ -52,16 +63,16 @@ app.use('/api/v1/publico', v1Publico);
 app.use('/api/v1/auth', v1Auth);
 
 //middlewares, definimos qué user entra en qué ruta
-app.use('/api/v1/estudiante', [passport.authenticate('jwt', {session: false}), esBedel], v1Estudiante);
-app.use('/api/v1/materia', v1Materia);
-app.use('/api/v1/carrera', v1Carrera );
+//app.use('/api/v1/estudiante', [passport.authenticate('jwt', {session: false}), esBedel], v1Estudiante);
+//app.use('/api/v1/materia', v1Materia [passport.authenticate('jwt', {session: false}), esBedel], v1Materia);
+//app.use('/api/v1/carrera', [passport.authenticate('jwt', {session: false}), esBedel], v1Carrera );
 app.use('/api/v1/estudianteCarrera', v1EstudianteCarrera);
 app.use('/api/estudianteMateria', v1EstudianteMateria);
 app.use('/api/carreraMateria', v1CarreraMateria);
 app.use('/api/v1/inscripcion', v1Inscripcion);
 
 
-//app.use('/api/v1/estadistica', v1Estadistica);
+//app.use('/api/v1/estadistica', [passport.authenticate('jwt', {session: false}), esDecano], v1Estadistica);
 
 
 

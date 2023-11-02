@@ -7,7 +7,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 
-export function inscribir(){
+export function Inscribir(){
     const { userData } = useContext(UserContext);
 
     //obtenemos el parámetro idInscripcion

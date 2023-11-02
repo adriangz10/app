@@ -72,7 +72,7 @@ export function Inscripciones(){
   }
 
   const dashboard = () =>{
-    navigate('/privado/dashboar');
+    navigate('/privado/dashboard');
   }
 
   const inscriptos = (idInscripciones, estudiante) =>{

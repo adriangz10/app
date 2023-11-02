@@ -1,4 +1,4 @@
-const conexion = require('./conenxioBD');
+const conexion = require('./conexionBD');
 
 //TODO Falta testeo!!! --Mario
 

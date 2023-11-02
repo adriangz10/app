@@ -49,8 +49,18 @@ eliminar = async (req, res) => {
 }
 
 crear = async (req, res) => {
-    const { dni, nombre, apellido, fechaNacimiento, nacionalidad, correoElectronico, celular, foto } = req.body;
+    const { dni, nombre, apellido, fechaNacimiento, nacionalidad, correoElectronico, celular} = req.body;
     //controlamos que los campos que no admiten NULL estén completos
+    
+
+    //obtenemos los datos del archivo (foto) que manda el cliente
+    let filename;
+    if(!filename){
+        filename = 'default.jpg';
+    }else{
+        filename = req.file.filename;
+    }
+    
     if (!dni || !nombre || !apellido || !nacionalidad || !correoElectronico) {
 
         res.status(404).json({ estado: 'FALLO', msj: 'Faltan campos obligatorios' });
@@ -63,7 +73,7 @@ crear = async (req, res) => {
             nacionalidad: nacionalidad,
             correoElectronico: correoElectronico,
             celular: celular,
-            foto: foto
+            foto: filename
         };
         try {
             const estudianteNuevo = await estudianteBD.crear(estudiante);

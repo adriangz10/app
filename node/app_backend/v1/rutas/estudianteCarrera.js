@@ -1,5 +1,7 @@
 const { Router } = require('express');
 
+const { buscarPorId} = require('../../controladores/estudianteCarrera');
+
 const router = Router();
 
 

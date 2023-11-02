@@ -1,4 +1,4 @@
-const conexion = require('./conenxionBD');
+const conexion = require('./conexionBD');
 
 //TODO No sé si está bien esto, pero el ejemplo este de convocatorias me parece lo más parecido a las inscripciones, 
 //TODO aunque el profesor dijo que "convocatoria" serían las materias --Mario

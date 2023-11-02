@@ -1,11 +1,13 @@
 const Router = require('express');
 
-router = Router();
+const router = Router();
 
-const { estadistica } = require('/controladores/estadistica')
+const { estadistica, estadistica2 } = require('/controladores/estadistica')
 
-router.get('/estadistica', estadistica);
+router
+    .get('/estadistica', estadistica)
+    .get('/estadistica', estadistica2);
 
-module.exports= {
+    module.exports= {
 
 }

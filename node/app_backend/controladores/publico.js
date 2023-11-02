@@ -4,8 +4,8 @@ const nodemailer = require('nodemailer');
 const handlebars = require('handlebars');
 
 exports.enviarCorreo = async (req, res) =>{
+
     const {nombre, correo, mensaje} = req.body;
-    
     const plantillaHds2 = fs.readFileSync(path.join(__dirname, '../utiles/handlebars/plantilla.hbs'), 'utf8');
     //__dirname me manda a la carpeta utiles, si tira error
     const correoTemplate = handlebars.compile(plantillaHds2);

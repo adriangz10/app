@@ -5,8 +5,8 @@ import { Table, Button  } from 'react-bootstrap';
 import axios from 'axios';
 
 
-export function inscriptos(props){
-    const {idInscripcion, estudiante} = useParams();
+export function Inscriptos(props){
+    const {idEstudianteMateria, estudiante} = useParams();
 
     const baseUrl = 'http://localhost:3005/api/v1';
 

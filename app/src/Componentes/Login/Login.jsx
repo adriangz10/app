@@ -1,9 +1,9 @@
 // import './Header.css';
 
 import { useNavigate } from 'react-router-dom';
-import { userContext } from '../UserContext/UserContext';
+import { UserContext } from '../UserContext/UserContext';
 import { useState, useContext } from 'react';
-import { Button, Form } from 'react-bootstrap/Button';
+import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
 //import './Login.css'
