@@ -52,7 +52,7 @@ const { esDecano } = require('./middlewares/esDecano');
 const v1Estudiante = require('./v1/rutas/estudiante');
 const v1Materia = require('./v1/rutas/materia');
 const v1Carrera = require('./v1/rutas/carrera');
-const v1Inscripcion = require('./v1/rutas/inscripcion');
+//const v1Inscripcion = require('./v1/rutas/inscripcion');
 const v1EstudianteCarrera = require('./v1/rutas/estudianteCarrera');
 const v1EstudianteMateria = require('./v1/rutas/estudianteMateria');
 const v1CarreraMateria = require('./v1/rutas/carreraMateria');
@@ -69,7 +69,7 @@ app.use('/api/v1/auth', v1Auth);
 app.use('/api/v1/estudianteCarrera', v1EstudianteCarrera);
 app.use('/api/estudianteMateria', v1EstudianteMateria);
 app.use('/api/carreraMateria', v1CarreraMateria);
-app.use('/api/v1/inscripcion', v1Inscripcion);
+//app.use('/api/v1/inscripcion', v1Inscripcion);
 
 
 //app.use('/api/v1/estadistica', [passport.authenticate('jwt', {session: false}), esDecano], v1Estadistica);

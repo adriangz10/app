@@ -1,32 +1,44 @@
-import React, { useState, useEffect} from "react";
+import { useState, useEffect, useContext} from "react";
+import { UserContext } from '../UserContext/UserContext';
 import { useNavigate } from 'react-router-dom';
-import {Button, Table, Card, Form} from "react-bootstrap";
+import {Button, Table, Form, Modal} from "react-bootstrap";
 import  axios  from "axios";
+import Swal from 'sweetalert2';
 
 import './Alumnos.css'
 
 
 
 export function Alumnos() {
-  const baseUrl = 'http:localhost:3005';
+  const baseUrl = 'http://localhost:3005';
 
   const navigate = useNavigate();
   
+
+  const {userData, setUserData} = useContext(UserContext);
+  const [archivo, setArchivo] = useState(null) 
+  const [datos, setDatos] = useState(null);
+
+  
   //almacenar información del formulario
-  const [formulario, setFormulario] = useState({
+  const [estudiante, setEstudiante] = useState({
     dni: "",
     nombre: "",
     apellido: "",
     fechaNacimiento: "",
     nacionalidad: "",
-    correo: "",
-    celular: "",
+    correoElectronico: "",
+    celular: ""
   });
 
-  //
-  const [datos, setDatos] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const cerrarModal = () => setShowModal(false);
 
-  //en useEffect voy colocando los métodos que defino acá abajo, es así como se usa???
+
+  const changeArchivo = (e)=>{
+    setArchivo(e.target.file[0]);
+  }
+ 
   useEffect(()=>{
     buscarEstudiantes();
   }, []);
@@ -45,17 +57,28 @@ export function Alumnos() {
   
 
   const eliminarEstudiante = async(idEstudiante) =>{
-    axios.delete(baseUrl +'/api/v1/estudiante/estudiantes'+ idEstudiante)
-    .then(resp =>{
-      //mostrar el mensaje de eliminacion en consola
-      //console.log(resp.data.msj);
-      
-      buscarEstudiantes();
-      alert(resp.data.msj);
-    
-    }).catch(error=>{
-      console.log(error);
-    });
+    Swal.fire({
+      title:'¿Está seguro que desea eliminar el estudiante seleccionado?',
+      showDenyButton:'Confirmar'
+    }).then((result)=>{
+      if(result.isConfirmed){
+        axios.delete(baseUrl +'/api/v1/estudiante/estudiantes'+ idEstudiante, {
+          headers:{
+            authorization:`Bearer ${userData.token}`
+          }
+        }).then(async resp=>{
+          const result = await Swal.fire({
+            text:resp.data.msj,
+            icon:'success'});
+
+            if(result.isConfirmed){
+              buscarEstudiantes();
+            }
+        }).catch(error=>{
+          console.log(error);
+        })
+      }
+    })
   }
 
   //enviar la información cargada en el front, recibe un parámetro "e"
@@ -63,160 +86,216 @@ export function Alumnos() {
   const enviarInformacion = async(e) =>{
     e.preventDefault();
 
-    axios.post(baseUrl +'/api/v1/estudiante/estudiantes', formulario)
-    .then( res=> {
-      console.log(res)
-      setFormulario({
-        dni: '',
-        nombre: '',
-        apellido:'',
-        fechaNacimiento:'',
-        nacionalidad:'',
-        correoElectronico:'',
-        celular:''
-      })
-      buscarEstudiantes();
-    }).catch(error =>{
-      console.log('error', error);
-    })
-  }
+    const formData = new FormData();
+        formData.append('dni', estudiante.dni);
+        formData.append('nombre', estudiante.nombre);
+        formData.append('apellido', estudiante.apellido);
+        formData.append('fechaNacimiento', estudiante.fechaNacimiento);
+        formData.append('nacionalidad', estudiante.nacionalidad);
+        formData.append('correoElectronico', estudiante.correoElectronico);
+        formData.append('celular', estudiante.celular);
+        formData.append('foto', archivo);
+        try {
 
-  //navegamos al dashboard que nos indica cual tipo de user está permitido en esta ruta
-  const dashboard = ()=>{
-    navigate('/privado/dashboard'); 
-  };
+                  
+        const response = await axios.post(baseUrl + '/api/v1/estudiante/estudiantes', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${userData.token}` //necesario para la autenticacion del usuario en el api
+            },
+        });
+
+        if(response.data.estado==='OK'){
+            const result = await Swal.fire({
+                text: response.data.msj,
+                icon:'success'})
+
+            if (result.isConfirmed){
+                cerrarModal();
+                buscarEstudiantes();
+                setEstudiante({dni:'',
+                    nombre:'', 
+                    apellido:'',
+                    nacionalidad:'', 
+                    correoElectronico:'',
+                    fechaNacimiento:'', 
+                    celular:''}
+                );    
+            }  
+            
+        }
+        } catch (error) {
+        console.error('Error al crear un estudiante', error);
+        }
+    }
+
+    // activa el modal y busca los rivales
+    const verModal = () => {        
+        setShowModal(true);
+    };
   
   
   return (
     <>
-      <div className='container mt-3 mb-2'>
-        <div className='row'>
-          <div className="col-md-11">
-            <h1>Datos de Alumnos</h1>
-          </div>
-          <div className='col-md-1'>
-            <Button variant='info' onClick={dashboard}>Volver</Button>
-          </div>
-        </div>
-        <Card className='mt-3 mb-3'>
-          <Card.Body>
-            <Form onSubmit={e => enviarInformacion(e)}>
-              <div className='row'>
-
-                <div className='col-md-4'>
-                  <Form.Group className="mb-3" controlId="formBasicNombre">
-                    <Form.Label>Nombre</Form.Label>
-                      <Form.Control type="text"
-                        onChange={(e) => setFormulario({ ...formulario, nombre:e.target.value })}
-                        value={formulario.nombre} required/>
-                  </Form.Group>
+        <div className='container mt-3 mb-2'>
+                <div className='row'>
+                    <div className="col-md-11">
+                        <h1>Estudiantes</h1>
+                    </div>                    
+                    <div className="col-md-1">
+                        <Button variant="primary" onClick={verModal}>Nuevo</Button>
+                    </div>
                 </div>
-               
-				        <div className="col-md-4">
-                  <Form.Group className="mb-3" controlId="formBasicApellido">
-                    <Form.Label>Apellido</Form.Label>
-                      <Form.Control type="text"
-                        onChange={(e) => setFormulario({ ...formulario, apellido:e.target.value })}
-                        value={formulario.apellido} required/>
-                  </Form.Group>
-                </div>
+            </div>
 
-                <div className="col-md-4">
-                  <Form.Group className="mb-3" controlId="formBasicFechaNacimiento">
-                    <Form.Label>Fecha de Nacimiento</Form.Label>
-                      <Form.Control type="date"
-                        onChange={(e) => setFormulario({ ...formulario, fechaNacimiento:e.target.value })}
-                        value={formulario.fechaNacimiento} required/>
-                  </Form.Group>
-                </div>
+            <div className='container mt-1 mb-5 miTabla'>
+                <Table striped bordered hover >
+                    <thead >
+                        <tr>
+                            <th className='miThead'>Foto</th>
+                            <th className='miThead'>Legajo</th>
+                            <th className='miThead'>DNI</th>
+                            <th className='miThead'>Apellido</th>
+                            <th className='miThead'>Nombre</th>
+                            <th className='miThead'>Fecha Nacimiento</th>
+                            <th className='miThead'>Nacionalidad</th>
+                            <th className='miThead'>Correo Electrónico</th>
+                            <th className='miThead'>Celular</th>
+                            <th className='miThead'>Acciones</th>
+                        </tr>
+                    </thead>
 
-                <div className="col-md-4">
-                  <Form.Group className="mb-3" controlId="formBasicNacionalidad">
-                    <Form.Label>Nacionalidad</Form.Label>
-                      <Form.Select onChange={(e) => setFormulario({ ...formulario, apellido:e.target.value })}>
-                        <option value="">Seleccione una opción</option>
-                        <option value="0">Argentina</option>
-                        <option value="1">Uruguay</option>
-                        <option value="2">Chile</option>
-                        <option value="3">Paraguay</option>
-                        <option value="4">Brasíl</option>
-                        <option value="5">Bolivia</option>
-                      </Form.Select>
-                  </Form.Group>
-                </div>
+                    <tbody>
+                        {
+                            datos ? (datos.map((item, index) => (
+                                <tr key={index}> 
+                                    <td>
+                                        <img 
+                                            className='foto'
+                                            src={`http://localhost:3010/archivos/${item.foto}`} alt={item.foto}
+                                        />
+                                    </td>
+                                    <td>{item.idEstudiante}</td>
+                                    <td>{item.dni}</td>
+                                    <td>{item.apellido}</td>
+                                    <td>{item.nombre}</td>
+                                    <td>{item.fechaNacimiento}</td>
+                                    <td>{item.nacionalidad}</td>
+                                    <td>{item.correoElectronico}</td>
+                                    <td>{item.celular}</td>
+                                    <td>
+                                        <Button variant="success" className='miBoton'>Editar</Button>
+                                        <Button variant="danger" onClick={()=>eliminarEstudiante(item.idEstudiante)}>Eliminar</Button>
+                                    </td>
+                                </tr>
+                            ))) 
+                            : 
+                            (
+                                <tr>
+                                    {/* Acá deberíamos poner algo como un mensaje */}
+                                </tr>
+                            )
+                        }
+                    </tbody>
+                </Table> 
+            </div>
 
-                  <div className="col-md-4">
-                    <Form.Group className="mb-3" controlId="formBasicCorreoElectronioc">
-                      <Form.Label>Correo electrónico</Form.Label>
-                        <Form.Control type="text"
-                          onChange={(e) => setFormulario({ ...formulario, correoElectronico:e.target.value })}
-                          value={formulario.correoElectronico} required/>
-                      </Form.Group>
-                  </div>             
 
-                  <div className="col-md-4">
-                  <Form.Group className="mb-3" controlId="formBasicCelular">
-                    <Form.Label>Celular</Form.Label>
-                      <Form.Control type="text"
-                        onChange={(e) => setFormulario({ ...formulario, celular:e.target.value })}
-                        value={formulario.celular} required/>
-                  </Form.Group>
-                </div>
-                </div>
-                
-                <Button variant='primary' type='submit'>Inscribir</Button>
-            
-            </Form>
-          </Card.Body>
-        </Card>
-      </div>
+            <Modal show={showModal} onHide={cerrarModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Nuevo Esrudiante</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={e => enviarInformacion(e)}>
+                        <div className='row'>
+                            <div className="col-md-4">
+                                <Form.Group className="mb-3" controlId="formBasicdni">
+                                    <Form.Label>DNI</Form.Label>
+                                    <Form.Control type="text"
+                                        onChange={(e) => setEstudiante({ ...estudiante, dni:e.target.value })}
+                                        value={estudiante.dni} required/>
+                                </Form.Group>
+                            </div>
+                        </div>
+                        <div className='row'>                            
+                            <div className="col-md-6">
+                                <Form.Group className="mb-3" controlId="formBasicNombre">
+                                    <Form.Label>Nombre</Form.Label>
+                                    <Form.Control type="text"
+                                        onChange={(e) => setEstudiante({ ...estudiante, nombre:e.target.value })}
+                                        value={estudiante.nombre} required/>
+                                </Form.Group>
+                            </div>
+                            <div className="col-md-6">
+                                <Form.Group className="mb-3" controlId="formBasicApellido">
+                                    <Form.Label>Apellido</Form.Label>
+                                    <Form.Control type="text"
+                                        onChange={(e) => setEstudiante({ ...estudiante, apellido:e.target.value })}
+                                        value={estudiante.apellido} required/>
+                                </Form.Group>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className="col-md-6">
+                                <Form.Group className="mb-3" controlId="formBasicNacionalidad">
+                                    <Form.Label>Nacionalidad</Form.Label>
+                                    <Form.Select onChange={(e) => setEstudiante({ ...estudiante, nacionalidad:e.target.value })}>
+                                        <option value="">Seleccionar</option>
+                                        <option value="0">Argentina</option>
+                                        <option value="1">Uruguay</option>
+                                        <option value="2">Chile</option>
+                                        <option value="3">Paraguay</option>
+                                        <option value="4">Brasil</option>
+                                        <option value="5">Bolivia</option>
+                                    </Form.Select>                                    
+                                </Form.Group>
+                            </div>                            
+                            <div className="col-md-6">
+                                <Form.Group className="mb-3" controlId="formBasicFechaNacimiento">
+                                    <Form.Label>Fecha Nacimiento</Form.Label>
+                                    <Form.Control type="date"
+                                        onChange={(e) => setEstudiante({ ...estudiante, fechaNacimiento:e.target.value })}
+                                        value={estudiante.fechaNacimiento} required/>
+                                </Form.Group>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className="col-md-8">
+                                <Form.Group className="mb-3" controlId="formBasicCorreoElectronico">
+                                    <Form.Label>Correo Electrónico</Form.Label>
+                                    <Form.Control type="text"
+                                        onChange={(e) => setEstudiante({ ...estudiante, correoElectronico:e.target.value })}
+                                        value={estudiante.correoElectronico} required/>
+                                </Form.Group>
+                            </div>
+                            <div className="col-md-4">
+                                <Form.Group className="mb-3" controlId="formBasicCelular">
+                                    <Form.Label>Celular</Form.Label>
+                                    <Form.Control type="text"
+                                        onChange={(e) => setEstudiante({ ...estudiante, celular:e.target.value })}
+                                        value={estudiante.celular} required/>
+                                </Form.Group>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className="col-md-12">
+                                <Form.Group className="mb-3" controlId="formBasicCelular">
+                                    <Form.Label>Seleccionar Archivo:</Form.Label>
+                                    <Form.Control type="file"                                                                            
+                                        accept=".jpg, .jpeg, .png" // Define los tipos de archivo permitidos                                        
+                                        onChange={changeArchivo}
+                                    />
+                                </Form.Group>
+                            </div>                            
+                        </div>
 
-      <div className='container mt-1 mb-5 tablaEstudiante'>
-        <Table strip bordered hover>
-          <thead>
-            <tr>
-              <th className='theadEstudiante'>Legajo</th>
-              <th className='theadEstudiante'>DNI</th>
-              <th className='theadEstudiante'>Nombre</th>
-              <th className='theadEstudiante'>Apellido</th>
-              <th className='theadEstudiante'>Nacionalidad</th>
-              <th className='theadEstudiante'>fechaNacimiento</th>
-              <th className='theadEstudiante'>correoElectronico</th>
-              <th className='theadEstudiante'>celular</th>
-              <th className='theadEstudiante'>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-            datos ? (datos.map ((item, index) =>(
-                <tr key={index}>
-                  <td>{item.idEstudiante}</td>
-                  <td>{item.dni}</td>
-                  <td>{item.nombre}</td>
-                  <td>{item.apellido}</td>
-                  <td>{item.nacionalidad}</td>
-                  <td>{item.fechaNacimiento}</td>
-                  <td>{item.correoElectronico}</td>
-                  <td>{item.celular}</td>
-
-                  <td>
-                    <Button variant='success' className='botonInterno'>Editar</Button>
-                    <Button variant='danger' onClick={()=>eliminarEstudiante(item.idEstudiante)}>Eliminar</Button>
-                  </td>
-
-                </tr>
-            )))
-            : 
-              (
-                <tr>
-                  {/* ACÁ IRÍA ALGÚN MENSAJE O ALGO ASÍ, */}
-                </tr>
-              )
-
-            }
-            </tbody>
-        </Table>
-      </div>
+                        <Button variant="primary" type="submit">
+                            Crear
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+      
     </>
   );
 }

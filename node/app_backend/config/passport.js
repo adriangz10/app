@@ -15,7 +15,7 @@ passport.use(new LocalStrategy({
 }, //función para validar al usuario (CE y clave)
 async (correoElectronico, clave, cb) =>{
     try{
-        const usuario = await usuarioBD.buscar(correoElectonico, clave);
+        const usuario = await usuarioBD.buscar(correoElectronico, clave);
         if(!usuario){
             return cb(null, false, {message: 'Nombre de usuario o contraseña incorrectos.'})
         }else{

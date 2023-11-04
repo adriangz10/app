@@ -68,7 +68,7 @@ const Dashboard = () =>{
 
                         <div className='row'>
                             <div className='col-mb-10'>
-                                <h3>Alumnos</h3>
+                                <h3>Carreras</h3>
                             </div>
 
                             <div className='col-md-2'>

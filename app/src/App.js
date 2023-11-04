@@ -13,9 +13,9 @@ import { Institucional } from "./Componentes/Institucional/Institucional";
 import { Alumnos } from "./Componentes/Alumnos/Alumnos";
 import { Materias } from "./Componentes/Materias/Materias";
 import { Carreras } from "./Componentes/Carreras/Carreras";
-import { Inscripciones } from "./Componentes/Inscripciones/Inscripciones";
-import { Inscribir } from "./Componenetes/Incripciones/Inscribir";
-import { Inscriptos } from "./Componentes/Inscripciones/Inscriptos"
+//import { Inscripciones } from "./Componentes/Inscripciones/Inscripciones";
+//import { Inscribir } from "./Componenetes/Incripciones/Inscribir";
+//import { Inscriptos } from "./Componentes/Inscripciones/Inscriptos"
 import { Contacto } from "./Componentes/Contacto/Contacto";
 import { Login } from "./Componentes/Login/Login";
 import { Dashboard } from "./Componentes/Dashboard/Dashboard";
@@ -68,26 +68,26 @@ export function App() {
           </ProtectedRoute>
         }/>
         
-        <Route path="/privado/inscripciones" 
+       {/*<Route path="/privado/inscripciones" 
         element={
           <ProtectedRoute mustBeBedel={true}>
             {<Inscripciones/>}
           </ProtectedRoute>
-        }/>
+        }/>*/}
         
-        <Route path="/privado/inscribir/:parametro" 
+        {/*<Route path="/privado/inscribir/" 
         element={
           <ProtectedRoute mustBeBedel={true} component={Inscribir}>
             {<Inscribir/>}
           </ProtectedRoute>
-        }/>
+        }/>*/}
         
-        <Route path="/privado/inscriptos/idInscripcion/:idEstudiante" 
+        {/*<Route path="/privado/inscriptos/idInscripcion/:idEstudiante" 
         element={
           <ProtectedRoute mustBeBedel={true} component={Inscriptos}>
             {<Inscriptos/>}
           </ProtectedRoute>
-        }/>
+        }/>*/}
       </Routes>
       </UserProvider>
       <Footer/>

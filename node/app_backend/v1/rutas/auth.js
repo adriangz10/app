@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { login} = require('../../controladores/auth');
+const { login } = require('../../controladores/auth');
 
 const router = Router();
 

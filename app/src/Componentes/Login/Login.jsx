@@ -1,5 +1,3 @@
-// import './Header.css';
-
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext/UserContext';
 import { useState, useContext } from 'react';
