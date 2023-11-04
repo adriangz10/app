@@ -2,28 +2,53 @@ const conexion = require('./conexionBD');
 
 //TODO Falta testeo!!! --Mario
 //TODO por favor corregir si todo esto! está mal --Mario
-const buscarPorId = async(idEstudianteMateria)=>{
+const estudianteMateriaPorIdMateria = async(idMateria)=>{
 
-    const consulta = `SELECT * FROM estudianteMateria AS em
-            INNER JOIN estudiante, materia AS e, m ON e.idEstudiante AND m.idMateria = em.estudiante, em.materia
-            WHERE em.idEstudianteMateria = ?`;
+    const consulta = `SELECT e.idEstudiante, e.nombre, e.apellido. e.correoElectronico  
+        FROM estudiante AS e
+            INNER JOIN estudianteMateria, materia AS em ON em.estudiante = e.idEstudiante
+            WHERE e.activo = 1 AND em.materia = ?`;
 
-    const [estudianteMateria] = await conexion.query(consulta, [idEstudianteMateria]);
+    const [inscriptoMateria] = await conexion.query(consulta, idMateria);
 
-    return estudianteMateria;
+    return inscriptoMateria;
 }
 
-const listarEstudianteMateria = async()=>{
+const borrarPorIdMateria = async()=>{
 
-    const consulta =`SELECT * FROM estudianteMateria AS em
-            INNER JOIN estudiante, materia AS e, m ON e.idEstudiante AND m.idMateria = em.estudiante, em.materia`;
+    const consulta =`DELETE FROM estudianteMateria WHERE materia = ?`;
 
-    const [estudianteMateria] = await conexion.query(consulta);
+    const [result] = await conexion.query(consulta);
     
-    return estudianteMateria;
+    return result;
+}
+
+const inscripcionMateria = async(idMateria, estudiante) =>{
+    
+    const inscripcionMat = await conexion.getConnection();
+
+    try{
+        await inscripcionMat.beginTransaction();
+
+        await borrarPorIdMateria(inscripcionMat, idMateria);
+
+        estudiante.forEach(async element =>{
+            const datos = {materia:idMateria, estudiante:element}
+            const consulta = `INSERT INTO estudianteMateria SET ?`;
+            const [result] = await conexion.query(consulta, datos);
+        })
+
+        await inscripcionMat.commit();
+    }catch(error){
+        await inscripcionMat.rollback();
+    }finally{
+        inscripcionMat.release();
+    }
+   ;
 }
 
 module.exports ={
-    buscarPorId,
-    listarEstudianteMateria
+    estudianteMateriaPorIdMateria,
+    borrarPorIdMateria,
+    inscripcionMateria
 }

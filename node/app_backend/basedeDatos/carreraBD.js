@@ -3,7 +3,13 @@ const conexion = require('./conexionBD');
 //buscar por ID
 const buscarCarreraPorId = async(idCarrera) =>{
     //lanzmos la consulta pidiendo los datos de la carrera
-    const consulta = `SELECT nombre, modalidad, cantMaterias
+    const consulta = `SELECT nombre, cantMaterias
+        (CASE
+            WHEN modalidad = 0 THEN 'presencial'
+            WHEN modalidad = 1 THEN 'virtual'
+            WHEN modalidad = 2 THEN 'hibrida'
+            ELSE''
+            END) AS modalidad
     FROM carrera WHERE activo = 0 AND idCarrera =?`;
 
     const [carrera] = await conexion.query(consulta, [idCarrera]);
@@ -14,7 +20,13 @@ const buscarCarreraPorId = async(idCarrera) =>{
 //buscar todas las carreras
 const buscarCarreras = async() =>{
     //lanzamos la consulta pidiendo los datos de la carrera
-    const consulta = `SELECT nombre, modalidad, cantMaterias
+    const consulta = `SELECT nombre, cantMaterias
+        (CASE 
+            WHEN modalidad = 0 THEN 'presencial'
+            WHEN modalidad = 1 THEN 'virtual'
+            WHEN modalidad = 2 THEN 'hibrida'
+            ELSE''
+            END) AS modalidad
     FROM carrera WHERE activo = 0`;
     //pedimos que nos muestre una lista de todas las carreras
     const [carrera] = await conexion.query(consulta);
