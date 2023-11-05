@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { buscarPorId, listarEstudianteMateria } = require('../../controladores/estudianteMateria');
+const { buscarPorId, inscripcionMateria } = require('../../controladores/estudianteMateria');
 
 
 
@@ -7,7 +7,7 @@ const router = Router();
 
 
 //buscar todas o por ID
-router.get('/estudianteMaterias', listarEstudianteMateria);
+router.post('/estudianteMateria/', inscripcionMateria)
 router.get('/estudianteMaterias/:idEstudianteMateria', buscarPorId);
 
 

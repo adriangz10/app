@@ -56,23 +56,22 @@ const v1Carrera = require('./v1/rutas/carrera');
 const v1EstudianteCarrera = require('./v1/rutas/estudianteCarrera');
 const v1EstudianteMateria = require('./v1/rutas/estudianteMateria');
 const v1CarreraMateria = require('./v1/rutas/carreraMateria');
-//const v1Estadistica = require('./v1/rutas/estadistica');
+const v1Estadistica = require('./v1/rutas/estadistica');
 
 //definimos los middlewares
 app.use('/api/v1/publico', v1Publico);
 app.use('/api/v1/auth', v1Auth);
 
 //middlewares, definimos qué user entra en qué ruta
-//app.use('/api/v1/estudiante', [passport.authenticate('jwt', {session: false}), esBedel], v1Estudiante);
+app.use('/api/v1/estudiante', [passport.authenticate('jwt', {session: false}), esBedel], v1Estudiante);
 //app.use('/api/v1/materia', v1Materia [passport.authenticate('jwt', {session: false}), esBedel], v1Materia);
-//app.use('/api/v1/carrera', [passport.authenticate('jwt', {session: false}), esBedel], v1Carrera );
-app.use('/api/v1/estudianteCarrera', v1EstudianteCarrera);
-app.use('/api/estudianteMateria', v1EstudianteMateria);
-app.use('/api/carreraMateria', v1CarreraMateria);
-//app.use('/api/v1/inscripcion', v1Inscripcion);
+app.use('/api/v1/carrera', [passport.authenticate('jwt', {session: false}), esBedel], v1Carrera );
+app.use('/api/v1/estudianteCarrera', [passport.authenticate('jwt', {session: false}), esBedel],  v1EstudianteCarrera);
+app.use('/api/estudianteMateria', [passport.authenticate('jwt', {session: false}), esBedel],  v1EstudianteMateria);
+app.use('/api/carreraMateria', [passport.authenticate('jwt', {session: false}), esBedel], v1CarreraMateria);
 
 
-//app.use('/api/v1/estadistica', [passport.authenticate('jwt', {session: false}), esDecano], v1Estadistica);
+app.use('/api/v1/estadistica', [passport.authenticate('jwt', {session: false}), esDecano], v1Estadistica);
 
 
 

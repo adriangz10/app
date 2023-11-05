@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../UserContext/UserContext';
 import { ProtectedElement } from '../ProtectedElement/ProtectedElement';
 import { Button } from 'react-bootstrap';
-//import { Link } from 'react-router-dom';
+import axios from 'axios';
 //Esto está comentado porque no se importan creo que es porque no se usan
 import Card from 'react-bootstrap/Card';
 
@@ -11,14 +11,48 @@ import Card from 'react-bootstrap/Card';
 
 
 const Dashboard = () =>{
+    const baseUrl = 'http://localhost:3005';
 
     const navigate = useNavigate();
     const [userData, setUserData] = useContext(UserContext)
 
+    const [estadistica, setEstadistica ] = useState(null);
 
-    const irAInscripciones = () =>{
-        navigate('/privado/inscripciones');
+
+    useEffect(()=>{
+        // busco la info estadistica unicamente cuando sea presidente
+        if(userData.user.tipoUsuario === 0){
+            buscarEstadistica();
+        }
+    },[]); 
+        
+    
+    const buscarEstadistica = async () =>{
+        axios.get(baseUrl + '/api/v1/estadistica/estadistica',{
+            headers:{
+                Authorization:`Bearer ${userData.token}` //necesario para la autenticacion del usuario en el api
+            }
+        })
+        .then( resp => {
+            setEstadistica(resp.data.dato);
+        })
+        .catch( error => {
+            console.log(error);
+        })
+    }
+
+
+    const irAInscripcionesCarrera = () =>{
+        navigate('/privado/inscripcionesCarrera');
     };
+
+    const irAAñadirMaterias = () => {
+        navigate('/privado/Carreras')
+    }
+
+    const irAInscripcionesMateria = ()=>{
+        navigate('/privado/inscripcioneMateria');
+    }
 
     const irAEstudiantes =() =>{
         navigate('/privado/alumnos');
@@ -41,14 +75,36 @@ const Dashboard = () =>{
                     <ProtectedElement mustBeBedel={true}>
                         <div className='row'>
                             <div className='col-md-10'>
-                                <h3>Inscripciones</h3>
+                                <h3>Incribir en Carreras</h3>
                             </div>
                                 
                                 <div className='col-md-2'>
-                                    <Button variant="primary" onClick={irAInscripciones}>Ir</Button>
+                                    <Button variant="primary" onClick={irAInscripcionesCarrera}>Ir</Button>
                                 </div>
                         </div>
 
+                        <div className='row'>
+                            <div className='col-md-10'>
+                                <h3>Añadir Materias a carreras</h3>
+                            </div>
+                                
+                                <div className='col-md-2'>
+                                    <Button variant="primary" onClick={irAAñadirMaterias}>Ir</Button>
+                                </div>
+                        </div>
+                        
+                        
+                        <div className='row'>
+                            <div className='col-md-10'>
+                                <h3>Incribir en Materias</h3>
+                            </div>
+                                
+                                <div className='col-md-2'>
+                                    <Button variant="primary" onClick={irAInscripcionesMateria}>Ir</Button>
+                                </div>
+                        </div>
+
+                        
                         <div className='row'>
                             <div className='col-mb-10'>
                                 <h3>Alumnos</h3>

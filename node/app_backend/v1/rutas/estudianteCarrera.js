@@ -1,13 +1,13 @@
 const { Router } = require('express');
+const { estudianteCarreraPorIdCarrera, inscripcionCarrera } = require('../../controladores/estudianteCarrera');
 
-const { buscarPorId} = require('../../controladores/estudianteCarrera');
+
 
 const router = Router();
 
 
-router.get('/estudianteCarreras/:idEstudianteCarrera', buscarPorId);
-router.get('/estudianteCarreras', listarEstudianteCarrera);
-
+router.get('/estudianteCarreras/:idEstudianteCarrera', estudianteCarreraPorIdCarrera );
+router.post('/estudianteCarreras/', inscripcionCarrera);
 
 //TODO No sé si sería correcto hacerlo, pero dejo comentadas las líneas crear nueva y modificar en todo caso --Mario
 

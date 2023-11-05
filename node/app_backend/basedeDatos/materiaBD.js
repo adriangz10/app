@@ -3,7 +3,11 @@ const conexion = require('./conexionBD');
 //buscar por id
 const buscarPorIdMat = async(idMateria) =>{
     //lanzamos la consulta
-    consulta = `SELECT  nombre, horasSemanales, tipoMateria
+    consulta = `SELECT  nombre, horasSemanales
+    (CASE 
+        WHEN tipoMateria = 0 THEN 'anual'
+        WHEN tipoMateria = 1 THEN 'cuatrimestral'
+        END) AS tipoMateria
     FROM materia WHERE activo= 1 AND idMateria = ?`;
     // creamos una lista conectando con la BD 
     const [materia] = await conexion.query(consulta, [idMateria]);
@@ -14,7 +18,11 @@ const buscarPorIdMat = async(idMateria) =>{
 //buscar todas las materias
 const buscarMaterias = async() =>{
     //lanzamos la consulta
-    consulta = `SELECT nombre, horasSemanales, tipoMateria
+    consulta = `SELECT nombre, horasSemanales
+    (CASE
+        WHEN tipoMateria = 0 THEN 'anual'
+        WHEN tipoMateria = 1 THEN 'cuatrimestral'
+        END) AS tipoMateria
     FROM materia WHERE activo = 1`;
     //creamos una lista conectando con la BD
     const [materias] = await conexion.query(consulta);

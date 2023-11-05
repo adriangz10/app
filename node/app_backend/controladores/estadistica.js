@@ -1,4 +1,4 @@
-const estadisticaBD = require('./basedeDatos/estadisticaBD');
+const estadisticaBD = require('../basedeDatos/estadisticaBD');
 
 
 estadistica = async(req, res) =>{

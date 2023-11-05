@@ -4,10 +4,10 @@ import axios from 'axios';
 import { Button, Form, Card, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-//import './Carreras.css'
+//import './Materias.css'
 
 
-export function Carreras(){
+export function Materias(){
       const baseUrl = 'http://localhost:3005';
 
       const navigate = useNavigate();
@@ -28,7 +28,7 @@ export function Carreras(){
       }, []);
 
       const buscarMaterias = async()=>{
-        axios.get(baseUrl + '/api/v1/rutas/carrera/carreras')
+        axios.get(baseUrl + '/api/v1/rutas/materia/materias')
         .then(resp =>{
           console.log(resp.data.dato)
           setDatosMateria(resp.data.dato);
@@ -37,7 +37,7 @@ export function Carreras(){
         })
       }
 
-      const eliminarCarrera = async(idMateria) =>{
+      const eliminarMateria = async(idMateria) =>{
         Swal.fire({
           title:'¿Está seguro que desea eliminar la materia seleccionada?',
           showDenyButton:'Confirmar'
@@ -66,14 +66,14 @@ export function Carreras(){
       const enviarInformacion = async(e)=>{
         e.preventDefault();
 
-        axios.post(baseUrl +'/api/v1/rutas/carrera/carreras')
+        axios.post(baseUrl +'/api/v1/rutas/materia/materias')
         .then(resp=>{
           setFormMateria({
             nombre:'',
             horasSemanales:'',
             tipoMateria:''
           })
-          buscarCarreras();
+          buscarMaterias();
         }).catch(error=>{
           console.log(error);
         })
@@ -88,7 +88,7 @@ export function Carreras(){
           <div className='container mt-3 mb-2'>
         <div className='row'>
           <div className="col-md-11">
-            <h1>Datos de Carrera</h1>
+            <h1>Datos de Materias</h1>
           </div>
           <div className='col-md-1'>
             <Button variant='info' onClick={dashboard}>Volver</Button>
@@ -111,7 +111,7 @@ export function Carreras(){
                 
                 <div className="col-md-4">
                   <Form.Group className="mb-3" controlId="formBasicCelular">
-                    <Form.Label>Cantidad de materias</Form.Label>
+                    <Form.Label>Carga Horaria</Form.Label>
                       <Form.Control type="text"
                         onChange={(e) => setFormMateria({ ...formMateria, horasSemanales:e.target.value })}
                         value={formMateria.horasSemanales} required/>
@@ -121,7 +121,7 @@ export function Carreras(){
                 
                 <div className="col-md-4">
                   <Form.Group className="mb-3" controlId="formBasicModalidad">
-                    <Form.Label>Carga horaria</Form.Label>
+                    <Form.Label>Tipo de Materia</Form.Label>
                       <Form.Select onChange={(e) => setFormMateria({ ...formMateria, tipoMateria:e.target.value })}>
                         <option value="">Seleccione una opción</option>
                         <option value="0">Anual</option>

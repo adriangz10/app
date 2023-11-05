@@ -1,12 +1,12 @@
 const { Router } = require('express');
-const { listarCarreraMateria, buscarPorId } = require('../../controladores/carreraMateria');
+const { carreraMateriaPorIdMateria, nuevaMateria } = require('../../controladores/carreraMateria');
 
 
 const router = Router();
 
-//buscar por ID y todas
-router.get('/carreraMaterias', listarCarreraMateria);
-router.get('/carreraMaterias/:idCarreraMaterias', buscarPorId);
+//buscar por ID y todas;
+router.get('/carreraMaterias/:idCarreraMaterias', carreraMateriaPorIdMateria);
+router.post('/carreraMaterias/', nuevaMateria);
 
 
 module.exports = router;

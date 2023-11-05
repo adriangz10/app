@@ -15,7 +15,7 @@ const estudianteCarreraPorIdCarrera = async(idCarrera) =>{
                 WHEN nacionalidad = 5 THEN Bolivia
                 ELSE ''
                 END
-                ) AS nacionalidad
+                ) AS e.nacionalidad
                 FROM estudiante AS e 
                 INNER JOIN estudianteCarrera AS ec
                 ON ec.estudiante = e.idEstudiante
@@ -36,7 +36,7 @@ const borrarPorIdCarrera = async(inscripcion, idCarrera)=>{
     return result;
 }
 
-const nuevoEstudianteCarrera = async(idCarrera, estudiantes) =>{
+const inscripcionCarrera = async(idCarrera, estudiantes) =>{
 
     const inscripcion = await conexion.getConnection();
     try{
@@ -65,5 +65,5 @@ const nuevoEstudianteCarrera = async(idCarrera, estudiantes) =>{
 module.exports={
     estudianteCarreraPorIdCarrera,
     borrarPorIdCarrera,
-    nuevoEstudianteCarrera
+    inscripcionCarrera
 }

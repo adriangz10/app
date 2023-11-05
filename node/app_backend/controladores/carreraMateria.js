@@ -2,29 +2,24 @@ const carreraMateriaBD = require('../basedeDatos/carreraMateriaBD');
 
 //TODO Falta testeo!!! --Mario
 
-buscarPorId = async(req, res)=>{
+carreraMateriaPorIdMateria = async(req, res)=>{
+    const {idCarrera} = req.params;
+
     try{
-
-        const idCarreraMateria = req.params.idCarreraMateria;
-        if(!idCarreraMateria){
-        res.status(404).json({estado: 'FALLO', msj:'Falta especificar el ID'});    
-        }
-
-        const carreraMateria = await carreraMateriaBD.buscarPorId(idCarreraMateria);
-        res.status(200).json({estado:'OK', dato: carreraMateria});
-
+        const materiasAñadidas = await carreraMateriaBD.carreraMateriaPorIdMateria(idCarrera);
+        res.status(201).json({estado:'OK', dato:materiasAñadidas});
     }catch(exec){
         throw exec;
     }
 
 }
 
-listarCarreraMateria = async(req, res)=>{
+nuevaMateria = async (req, res)=>{
+    const {idCarrera, materias} = req.body;
+
     try{
-        const carreraMateria = await carreraMateria.listarCarreraMateria();
-        res.status(200).json({estado:'OK', dato:carreraMateria});
-
-
+        const nuevaMateria = await carreraMateriaBD.nueva(idCarrera,materias);
+        res.status(201).json({estado:'OK', msj:'Materia añádida'});
     }catch(exec){
         throw exec;
     }
@@ -34,6 +29,6 @@ listarCarreraMateria = async(req, res)=>{
 //TODO como es relacional esta tabla no sé si son necesarias agregar, --Mario
 
 module.exports={
-    buscarPorId,
-    listarCarreraMateria
+    carreraMateriaPorIdMateria,
+    nuevaMateria
 }

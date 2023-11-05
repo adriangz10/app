@@ -4,7 +4,7 @@ const conexion = require('./conexionBD');
 const buscarUser = async(correoElectronico, clave) =>{
     
     //hacemos la consulta y le pedimos a la base de datos todos los datos correspondientes
-    const consulta = `SELECT idUsuario, nombre, apellido
+    const consulta = `SELECT idUsuario, nombre, apellido,
         tipoUsuario, correElectronico 
         FROM usuario WHERE correoElectronico = ? AND clave = SHA2(?, 256)
         AND activo = 1`;
@@ -21,14 +21,13 @@ const buscarUser = async(correoElectronico, clave) =>{
 const buscarUserPorId = async(idUsuario) =>{
 
     //en esta consulta solo requerimos el ID y que esté activo
-    const consulta = `SELECT idUsuario, nombre, apellido, 
-    tipoUsuario, correoElectronico
-    FROM usuario as u WHERE idUsuario = ? AND activo = 1`;
+    const consulta = `SELECT idUsuario
+    FROM usuario WHERE idUsuario = ? AND activo = 1`;
 
     //almacenamos los datos en una lista con la consulta y el ID pasado por parámetro
     const [usuario] = await conexion.query(consulta, [idUsuario]);
 
-    return usuario[0];
+    return usuario;
 }
 
 module.exports = {
