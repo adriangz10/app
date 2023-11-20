@@ -1,3 +1,0 @@
-INTEGRANTES: Juan Ignacio Nuñez, Adrian Alberto Gomez, Mario Ismael Lopez
-
-REPOSITORIO: https://github.com/adriangz10/app.git

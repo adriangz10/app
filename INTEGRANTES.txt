@@ -1,0 +1,14 @@
+INTEGRANTES: Juan Ignacio Nuñez, Adrian Alberto Gomez, Mario Ismael Lopez
+
+REPOSITORIO: https://github.com/adriangz10/app.git
+
+Hola profe, le queria comentar algunas cosas del trabajo, 
+por ejemplo que todo no esta implementado al 100 en el front
+ solo se pueden ver los datos nada mas, en estudiantes si se puede 
+ eliminar, no llegamos a poder implementar todo, 
+ pero si desde el back utilizando el rester se pueden realizar todas las
+peticiones o crud, ahora otra cuestion a tener en cuenta en la 
+base de datos por ejemplo en las tablas Carreras y Materias cambiamos la colmuna nombre, por nombreCarrera y nombreMateria, 
+ya que al devolver la peticion con el dato nombre del alumno y de carrera o materia, parece que entraba en conflicto y al devolver el dato
+ solo mostraba el apellido y no ponia el nombre del alumno o carrera, esa fue la solucion que encontramos, espero que quede claro por si no les funciona
+  los endpoints de estudiantesCarrera y estudiantesMaterias, gracias y saludos
